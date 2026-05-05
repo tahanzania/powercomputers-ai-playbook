@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Developer Documentation - PowerComputers Tanzania</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-body: #0d1117;
+            --bg-sidebar: #010409;
+            --bg-card: #161b22;
+            --border: #30363d;
+            --text-main: #c9d1d9;
+            --text-muted: #8b949e;
+            --text-heading: #ffffff;
+            --accent: #58a6ff;
+            --accent-hover: #79c0ff;
+            --code-bg: #010409;
+            --success: #3fb950;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+        }
+
+        h1, h2, h3, h4 { color: var(--text-heading); font-weight: 600; }
+        
+        a { color: var(--accent); text-decoration: none; transition: 0.2s; }
+        a:hover { text-decoration: underline; color: var(--accent-hover); }
+
+        /* Top Navbar */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 64px;
+            background-color: var(--bg-sidebar);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            z-index: 50;
+        }
+
+        .logo { font-size: 1.25rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 0.5rem; }
+        .logo i { color: var(--accent); }
+
+        .lang-toggle {
+            display: flex; background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; overflow: hidden;
+        }
+        .lang-btn {
+            background: transparent; border: none; color: var(--text-muted); padding: 0.4rem 1.2rem; font-family: 'Inter'; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s;
+        }
+        .lang-btn.active { background: var(--accent); color: #0d1117; }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed; top: 64px; left: 0; bottom: 0; width: 280px;
+            background-color: var(--bg-sidebar); border-right: 1px solid var(--border);
+            padding: 2rem 1rem; overflow-y: auto;
+        }
+
+        .sidebar ul { list-style: none; }
+        .sidebar li { margin-bottom: 0.25rem; }
+        .sidebar a {
+            display: block; padding: 0.5rem 1rem; color: var(--text-muted); border-radius: 6px; font-size: 0.95rem; 
+        }
+        .sidebar a:hover { background-color: var(--bg-card); color: var(--text-main); text-decoration: none; }
+        .sidebar .section-title { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin: 1.5rem 0 0.5rem 1rem; font-weight: 700; }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px; margin-top: 64px; padding: 4rem; max-width: 1000px; width: 100%;
+        }
+
+        section { margin-bottom: 5rem; scroll-margin-top: 100px; }
+        
+        section h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+        section h2 { font-size: 1.75rem; margin-top: 3rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+        section h3 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+        section p { margin-bottom: 1.25rem; color: var(--text-main); font-size: 1.05rem; }
+        
+        ul.content-list { margin-left: 1.5rem; margin-bottom: 1.5rem; color: var(--text-main); font-size: 1.05rem; }
+        ul.content-list li { margin-bottom: 0.5rem; }
+
+        /* Code Blocks */
+        .code-block {
+            background-color: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; margin: 1.5rem 0; overflow: hidden;
+        }
+        .code-header {
+            background-color: var(--bg-card); border-bottom: 1px solid var(--border); padding: 0.6rem 1rem; font-size: 0.85rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; font-family: 'Inter', sans-serif; font-weight: 600;
+        }
+        .code-content { padding: 1.25rem; font-family: 'Fira Code', monospace; font-size: 0.9rem; overflow-x: auto; color: #e6edf3; line-height: 1.6; }
+        
+        .syntax-comment { color: #8b949e; font-style: italic; }
+        .syntax-keyword { color: #ff7b72; }
+        .syntax-string { color: #a5d6ff; }
+        .syntax-highlight { color: #7ee787; }
+
+        /* Alerts/Cards */
+        .alert {
+            padding: 1.25rem; border-left: 4px solid var(--accent); background-color: rgba(88, 166, 255, 0.1); border-radius: 0 6px 6px 0; margin: 1.5rem 0;
+        }
+        .alert h4 { color: var(--accent); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: 1.1rem; }
+        .alert p { margin-bottom: 0; font-size: 0.95rem; }
+
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        
+        .card { background: var(--bg-card); border: 1px solid var(--border); padding: 1.5rem; border-radius: 8px; transition: 0.2s; }
+        .card:hover { border-color: var(--accent); }
+        .card h3 { margin-top: 0; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem; color: #fff;}
+        .card i { color: var(--accent); }
+        .card p { font-size: 0.95rem; margin-bottom: 0; color: var(--text-muted); }
+
+        code:not(.code-content) {
+            background-color: rgba(110, 118, 129, 0.4); padding: 0.2em 0.4em; border-radius: 6px; font-family: 'Fira Code', monospace; font-size: 0.85em;
+        }
+
+        /* Tables */
+        .table-container { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; margin: 1.5rem 0; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+        th { text-align: left; padding: 1rem; border-bottom: 1px solid var(--border); background: var(--bg-card); color: var(--accent); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.05em; }
+        td { padding: 1rem; border-bottom: 1px solid var(--border); color: var(--text-muted); }
+        td:first-child { color: var(--text-main); font-weight: 600; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(255,255,255,0.02); }
+
+        /* Steps */
+        .step-item { display: flex; gap: 1.5rem; margin-bottom: 2.5rem; }
+        .step-num { width: 48px; height: 48px; border-radius: 50%; background: rgba(88,166,255,0.1); border: 2px solid var(--accent); color: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.25rem; flex-shrink: 0; }
+        .step-content h3 { margin-top: 0; margin-bottom: 0.5rem; font-size: 1.25rem; color: #fff;}
+        .step-content p { color: var(--text-muted); margin-bottom: 0; }
+
+        /* Multilingual */
+        .lang-sw { display: none; }
+        body.lang-sw-active .lang-en { display: none; }
+        body.lang-sw-active .lang-sw { display: block; }
+        span.lang-sw { display: none; }
+        body.lang-sw-active span.lang-en { display: none; }
+        body.lang-sw-active span.lang-sw { display: inline; }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-code"></i> PowerComputers AI Docs
+        </div>
+        <div class="lang-toggle">
+            <button class="lang-btn active" onclick="setLanguage('en')">English</button>
+            <button class="lang-btn" onclick="setLanguage('sw')">Kiswahili</button>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <ul>
+            <li><a href="#introduction">Introduction</a></li>
+            <li><a href="#swahili-advantage">The Swahili Advantage</a></li>
+            <li><a href="#project-context">Project Context (claude.md)</a></li>
+            <li><a href="#tools">AI Tools Ecosystem</a></li>
+            
+            <div class="section-title">Core Workflows</div>
+            <li><a href="#workflow-debugging">Fast Debugging</a></li>
+            <li><a href="#workflow-legacy">Legacy Code & Refactoring</a></li>
+            <li><a href="#workflow-database">Database & Architecture</a></li>
+            <li><a href="#workflow-docs">Docs & Code Reviews</a></li>
+
+            <div class="section-title">Advanced Workflows</div>
+            <li><a href="#workflow-ui">UI Component Generation</a></li>
+            <li><a href="#workflow-performance">Performance Optimization</a></li>
+            <li><a href="#workflow-devops">DevOps & Scripting</a></li>
+
+            <div class="section-title">Company Specific</div>
+            <li><a href="#workflow-powercomputers">PowerComputers Workflows</a></li>
+
+            <div class="section-title">Implementation</div>
+            <li><a href="#roadmap">4-Week Roadmap</a></li>
+            <li><a href="#best-practices">Best Practices</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        
+        <section id="introduction">
+            <h1 class="lang-en">Supercharging Development with AI</h1>
+            <h1 class="lang-sw">Kuboresha Uundaji wa Mifumo kwa Kutumia AI</h1>
+            
+            <p class="lang-en">Welcome to the official AI Playbook for PowerComputers Tanzania developers. This documentation is designed to help you integrate AI directly into your daily workflows. Rather than seeing AI as just a chatbot, treat it as a senior pair-programmer that sits right next to you.</p>
+            
+            <p class="lang-sw">Karibu kwenye Mwongozo rasmi wa AI kwa watengenezaji wa PowerComputers Tanzania. Nyaraka hizi zimeundwa kukusaidia kuunganisha AI kwenye kazi zako za kila siku. Badala ya kuichukulia AI kama chatbot, ichukulie kama 'Senior Developer' mnayefanya naye kazi bega kwa bega.</p>
+
+            <h2 class="lang-en">Why adopt AI in your workflow?</h2>
+            <h2 class="lang-sw">Kwa Nini Utumie AI kwenye kazi zako?</h2>
+            <p class="lang-en">Developers who use AI tools ship code 2–3× faster. Here is what that means for your team:</p>
+            <p class="lang-sw">Wanaotumia zana za AI huandika code kwa kasi mara 2-3 zaidi. Hii inamaanisha nini kwa timu yako:</p>
+
+            <div class="grid-3">
+                <div class="card">
+                    <h3 class="lang-en"><i class="fa-solid fa-bolt"></i> Unmatched Speed</h3>
+                    <h3 class="lang-sw"><i class="fa-solid fa-bolt"></i> Kasi Kubwa</h3>
+                    <p class="lang-en">Generate boilerplate, functions, and tests in seconds instead of hours. Focus entirely on the logic.</p>
+                    <p class="lang-sw">Tengeneza code za msingi na majaribio ndani ya sekunde. Weka akili yako yote kwenye mantiki.</p>
+                </div>
+                <div class="card">
+                    <h3 class="lang-en"><i class="fa-solid fa-bug"></i> Painless Debugging</h3>
+                    <h3 class="lang-sw"><i class="fa-solid fa-bug"></i> Kutatua Makosa</h3>
+                    <p class="lang-en">Paste an error message and get a fix. AI reads stack traces better than most Stack Overflow threads.</p>
+                    <p class="lang-sw">Weka error message upate suluhisho. AI inasoma makosa vizuri kushinda hata mtandaoni.</p>
+                </div>
+                <div class="card">
+                    <h3 class="lang-en"><i class="fa-solid fa-book"></i> Instant Docs</h3>
+                    <h3 class="lang-sw"><i class="fa-solid fa-book"></i> Nyaraka za Haraka</h3>
+                    <p class="lang-en">Generate README files, API specs, and inline comments automatically from your existing code.</p>
+                    <p class="lang-sw">Tengeneza nyaraka za README na API moja kwa moja kutokea kwenye code yako.</p>
+                </div>
+                <div class="card">
+                    <h3 class="lang-en"><i class="fa-solid fa-flask"></i> Effortless Testing</h3>
+                    <h3 class="lang-sw"><i class="fa-solid fa-flask"></i> Majaribio Rahisi</h3>
+                    <p class="lang-en">Ask AI to write unit tests for any function. Increase coverage without the pain of writing tests manually.</p>
+                    <p class="lang-sw">Omba AI iandike unit tests. Ongeza usalama wa mradi bila maumivu ya kuandika tests mwenyewe.</p>
+                </div>
+                <div class="card">
+                    <h3 class="lang-en"><i class="fa-solid fa-graduation-cap"></i> Constant Learning</h3>
+                    <h3 class="lang-sw"><i class="fa-solid fa-graduation-cap"></i> Kujifunza Mfululizo</h3>
+                    <p class="lang-en">Ask AI to explain unfamiliar frameworks or concepts. It's like having a senior dev on call 24/7.</p>
+                    <p class="lang-sw">Omba AI ikuelezee teknolojia mpya. Ni kama kuwa na senior dev wakati wote.</p>
+                </div>
+                <div class="card">
+                    <h3 class="lang-en"><i class="fa-solid fa-earth-africa"></i> Language Support</h3>
+                    <h3 class="lang-sw"><i class="fa-solid fa-earth-africa"></i> Lugha ya Kiswahili</h3>
+                    <p class="lang-en">Modern AI understands Swahili natively. You can describe what you need in Swahili and get code back.</p>
+                    <p class="lang-sw">AI inaelewa Kiswahili vizuri. Unaweza kuelezea unachohitaji kwa Kiswahili na kupata code inafanya kazi.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="swahili-advantage">
+            <h2 class="lang-en">The Swahili Advantage (4 Strategies)</h2>
+            <h2 class="lang-sw">Faida ya Kiswahili (Mbinu 4)</h2>
+
+            <p class="lang-en">The biggest blocker for many developers is thinking they need perfect English. You don't. Here are 4 strategies to effectively prompt AI using Swahili.</p>
+            <p class="lang-sw">Kikwazo kikubwa ni kufikiri unahitaji Kiingereza kizuri sana. Hilo sio kweli. Hizi ni mbinu 4 za kutumia Kiswahili vizuri unapofanya kazi na AI.</p>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h3 class="lang-en">1. Direct Swahili Prompting</h3>
+                    <h3 class="lang-sw">1. Kiswahili Moja kwa Moja</h3>
+                    <p class="lang-en">Tools like Claude understand Swahili logic natively. You can explain your entire problem in Swahili.</p>
+                    <p class="lang-sw">AI inaelewa Kiswahili kwa ufasaha. Elezea tatizo lako lote kwa lugha ya Kiswahili.</p>
+                    <div class="code-block" style="margin-top: 1rem; margin-bottom: 0;">
+                        <div class="code-content" style="padding: 0.75rem;">
+                            <span class="syntax-string">"Niandike function ya Python inayopokea orodha ya nambari na kurudisha wastani wao."</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="lang-en">2. Hybrid Prompting</h3>
+                    <h3 class="lang-sw">2. Kiswahili + Kiingereza (Mseto)</h3>
+                    <p class="lang-en">Use Swahili for your intent, and English for technical terms or instructions on the output format.</p>
+                    <p class="lang-sw">Tumia Kiswahili kuelezea mantiki, na Kiingereza kwa maneno ya kiufundi au majina ya variables.</p>
+                    <div class="code-block" style="margin-top: 1rem; margin-bottom: 0;">
+                        <div class="code-content" style="padding: 0.75rem;">
+                            <span class="syntax-string">"Niandike</span> React component <span class="syntax-string">inayoonyesha table ya watumiaji kutoka</span> API.<br>
+                            <span class="syntax-highlight">Make sure to name the variables in English.</span>"
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="lang-en">3. Pseudo-Code Instructions</h3>
+                    <h3 class="lang-sw">3. Kuelezea Hatua (Pseudo-code)</h3>
+                    <p class="lang-en">Write what you want step-by-step in Swahili. AI understands intent incredibly well.</p>
+                    <p class="lang-sw">Andika unachotaka hatua kwa hatua kwa Kiswahili. AI itaielewa na kuiweka kwenye code.</p>
+                    <div class="code-block" style="margin-top: 1rem; margin-bottom: 0;">
+                        <div class="code-content" style="padding: 0.75rem;">
+                            1. <span class="syntax-string">Pata data kutoka</span> database<br>
+                            2. <span class="syntax-string">Chuja rekodi za leo tu</span><br>
+                            3. <span class="syntax-string">Rudisha kwa mfumo wa JSON</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="lang-en">4. Reverse Explanation</h3>
+                    <h3 class="lang-sw">4. Omba Maelezo kwa Kiswahili</h3>
+                    <p class="lang-en">If you find English code online or receive generated code you don't understand, ask AI to explain it in Swahili.</p>
+                    <p class="lang-sw">Ukiona code za Kiingereza mtandaoni usizozielewa, mpe AI na uiombe ikuelezee kwa Kiswahili.</p>
+                    <div class="code-block" style="margin-top: 1rem; margin-bottom: 0;">
+                        <div class="code-content" style="padding: 0.75rem;">
+                            <span class="syntax-string">"Eleza hii code kwa Kiswahili, hatua kwa hatua:</span><br>
+                            [bandika code hapa]"
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="project-context">
+            <h2 class="lang-en">Project Context (<code>claude.md</code>)</h2>
+            <h2 class="lang-sw">Kutoa Taarifa za Mradi (<code>claude.md</code>)</h2>
+
+            <p class="lang-en">AI is only as smart as the context you provide. Instead of explaining your project structure, tech stack, and coding rules every single time you open a new chat, use a <code>claude.md</code> file.</p>
+            <p class="lang-sw">AI inafanya vizuri kutokana na taarifa unazompa. Badala ya kuelezea muundo wa mradi, teknolojia, na sheria kila unapofungua chat mpya, tumia faili la <code>claude.md</code>.</p>
+
+            <p class="lang-en">Create a file named <code>claude.md</code> in the root of your project. Paste its contents into Claude at the start of a session, or set it as project instructions if using Claude Projects or Cursor.</p>
+            <p class="lang-sw">Tengeneza faili linaitwa <code>claude.md</code> kwenye mradi wako. Mwanzoni mwa kazi, mwambie AI asome faili hilo ili aelewe muundo wote wa mradi.</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span>claude.md Example</span>
+                </div>
+                <div class="code-content">
+<span class="syntax-comment"># PowerComputers Architecture Rules</span><br><br>
+<span class="syntax-comment">## Tech Stack</span><br>
+- Frontend: <span class="syntax-string">React.js, Tailwind CSS</span><br>
+- Backend: <span class="syntax-string">Node.js, Express</span><br>
+- Database: <span class="syntax-string">PostgreSQL</span><br><br>
+<span class="syntax-comment">## Coding Guidelines</span><br>
+1. Variables lazima ziwe <span class="syntax-string">camelCase</span>.<br>
+2. Kila API endpoint lazima iwe na <span class="syntax-keyword">try/catch</span> block kwa ajili ya error handling.<br>
+3. Comments kwenye code ziwe kwa <span class="syntax-string">Kiingereza</span>, lakini maelezo ya PR yanaweza kuwa kwa <span class="syntax-string">Kiswahili</span>.<br>
+4. Button components zipo ndani ya <span class="syntax-string">`/src/components/ui/Button.jsx`</span>. Usitengeneze button mpya, tumia iliyopo.
+                </div>
+            </div>
+        </section>
+
+        <section id="tools">
+            <h2 class="lang-en">AI Tools Ecosystem</h2>
+            <h2 class="lang-sw">Zana za AI Zilizopo</h2>
+
+            <p class="lang-en">Here is a breakdown of the best AI tools currently available for developers, all of which support Swahili input to varying degrees.</p>
+            <p class="lang-sw">Huu ni mchanganuo wa zana bora za AI kwa watengenezaji. Zote zinakubali maelezo ya Kiswahili.</p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="lang-en">Tool</th><th class="lang-sw">Zana</th>
+                            <th class="lang-en">Best For</th><th class="lang-sw">Bora Kwa</th>
+                            <th class="lang-en">Swahili Support</th><th class="lang-sw">Uwezo wa Kiswahili</th>
+                            <th class="lang-en">Access</th><th class="lang-sw">Upatikanaji</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Claude (Anthropic)</td>
+                            <td class="lang-en">Complex coding, massive files, context window.</td><td class="lang-sw">Code ngumu na kusoma mafaili makubwa sana.</td>
+                            <td>✅✅ Excellent</td>
+                            <td class="lang-en">Free / Paid</td><td class="lang-sw">Bure / Kulipia</td>
+                        </tr>
+                        <tr>
+                            <td>Cursor IDE</td>
+                            <td class="lang-en">AI-first code editor (fork of VS Code).</td><td class="lang-sw">Code editor iliyojengwa kwa ajili ya AI.</td>
+                            <td>✅ Yes</td>
+                            <td class="lang-en">Free / $20/mo</td><td class="lang-sw">Bure / $20/mwezi</td>
+                        </tr>
+                        <tr>
+                            <td>Google Gemini</td>
+                            <td class="lang-en">Fast iterations and general coding.</td><td class="lang-sw">Maswali ya haraka na uandishi wa code wa kawaida.</td>
+                            <td>✅✅ Excellent</td>
+                            <td class="lang-en">Free / Paid</td><td class="lang-sw">Bure / Kulipia</td>
+                        </tr>
+                        <tr>
+                            <td>GitHub Copilot</td>
+                            <td class="lang-en">Inline code completion directly in IDE.</td><td class="lang-sw">Kumalizia code unapokuwa unaandika kwenye IDE.</td>
+                            <td>✅ Good (Comments)</td>
+                            <td class="lang-en">$10/mo</td><td class="lang-sw">$10/mwezi</td>
+                        </tr>
+                        <tr>
+                            <td>ChatGPT</td>
+                            <td class="lang-en">General logic and debugging.</td><td class="lang-sw">Mantiki na utatuzi wa makosa.</td>
+                            <td>✅ Good</td>
+                            <td class="lang-en">Free / $20/mo</td><td class="lang-sw">Bure / $20/mwezi</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- CORE WORKFLOWS -->
+        <section id="workflow-debugging">
+            <h2 class="lang-en">Core: Fast Debugging & Error Fixing</h2>
+            <h2 class="lang-sw">Msingi: Kutatua Makosa Haraka</h2>
+
+            <p class="lang-en">Don't waste hours staring at a cryptic stack trace. Feed the exact error and the surrounding code to Claude.</p>
+            <p class="lang-sw">Usipoteze masaa ukiangalia error usizozielewa. Mpe Claude error yote kama ilivyo pamoja na code yako.</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="lang-en">Debugging Prompt</span><span class="lang-sw">Prompt ya Kutatua Kosa</span>
+                </div>
+                <div class="code-content">
+                    "Code hii inanipatia hitilafu (error) hii:<br>
+                    <span class="syntax-string">`Uncaught TypeError: data.map is not a function`</span>.<br><br>
+                    Tafadhali eleza tatizo na unitolee suluhisho. Code yangu:<br>
+                    <span class="syntax-keyword">const</span> data = <span class="syntax-keyword">await</span> fetch(<span class="syntax-string">'/api/users'</span>);<br>
+                    data.map(user => ...)"
+                </div>
+            </div>
+        </section>
+
+        <section id="workflow-legacy">
+            <h2 class="lang-en">Core: Legacy Code & Refactoring</h2>
+            <h2 class="lang-sw">Msingi: Kusasisha Code za Zamani</h2>
+
+            <p class="lang-en">Working on an old codebase? Use AI to understand, clean up, and modernize the code.</p>
+            <p class="lang-sw">Unafanyia kazi mradi wa zamani? Tumia AI kuelewa, kusafisha, na kusasisha code hizo.</p>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h3 class="lang-en"><i class="fa-solid fa-glasses"></i> Code Explanation</h3>
+                    <h3 class="lang-sw"><i class="fa-solid fa-glasses"></i> Kuelewa Code</h3>
+                    <p class="lang-en">Paste undocumented loops or complex logic. Ask: "Sielewi hii function inafanya nini. Nielezee hatua kwa hatua kwa Kiswahili rahisi."</p>
+                    <p class="lang-sw">Weka code zisizoeleweka. Uulize: "Sielewi hii function inafanya nini. Nielezee hatua kwa hatua kwa Kiswahili rahisi."</p>
+                </div>
+                <div class="card">
+                    <h3 class="lang-en"><i class="fa-solid fa-wand-magic-sparkles"></i> Modernization</h3>
+                    <h3 class="lang-sw"><i class="fa-solid fa-wand-magic-sparkles"></i> Kusasisha Teknolojia</h3>
+                    <p class="lang-en">Instantly convert old code. Ask: "Badilisha hii jQuery code ya zamani iwe React component inayotumia Hooks."</p>
+                    <p class="lang-sw">Sasisha code haraka. Uulize: "Badilisha hii jQuery code ya zamani iwe React component inayotumia Hooks."</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="workflow-database">
+            <h2 class="lang-en">Core: Database & Architecture</h2>
+            <h2 class="lang-sw">Msingi: Muundo wa Database</h2>
+
+            <p class="lang-en">Planning a new feature? Describe the requirements to Claude. It can generate robust SQL schemas or write safe migration scripts to avoid data loss.</p>
+            <p class="lang-sw">Unapanga kuongeza kipengele kipya? Mwelezee Claude mahitaji yako. Anaweza kutengeneza muundo mzuri wa SQL au kuandika migrations usalama.</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="lang-en">SQL Migration Prompt</span><span class="lang-sw">Prompt ya Database</span>
+                </div>
+                <div class="code-content">
+                    "Nina table ya <span class="syntax-string">'users'</span> kwenye PostgreSQL. Nataka kuongeza mfumo wa manunuzi (orders).<br><br>
+                    <span class="syntax-highlight">Niandike SQL query inayotengeneza table ya 'orders' na kuiunganisha na 'users' kupitia foreign key. Hakikisha umeweka 'ON DELETE CASCADE'.</span>"
+                </div>
+            </div>
+        </section>
+
+        <section id="workflow-docs">
+            <h2 class="lang-en">Core: Docs & Automations</h2>
+            <h2 class="lang-sw">Msingi: Nyaraka na Majaribio</h2>
+
+            <ul class="content-list">
+                <li><strong class="lang-en">Writing Tests:</strong><strong class="lang-sw">Kuandika Tests:</strong> <span class="lang-en">"Niandike unit tests kwa Jest kwa function hii. Jaribu hali za kawaida, pembejeo tupu, na makosa."</span><span class="lang-sw">"Niandike unit tests kwa Jest kwa function hii. Jaribu hali za kawaida, pembejeo tupu, na makosa."</span></li>
+                <li><strong class="lang-en">Pull Request Descriptions:</strong><strong class="lang-sw">Maelezo ya PR:</strong> <span class="lang-en">Paste your <code>git diff</code> output into Claude and ask it to write a comprehensive Pull Request description summarizing the changes.</span><span class="lang-sw">Weka mabadiliko yako ya code (git diff) na umwombe Claude aandike maelezo kamili ya Pull Request.</span></li>
+                <li><strong class="lang-en">API Documentation:</strong><strong class="lang-sw">Nyaraka za API:</strong> <span class="lang-en">Provide your Express or Django routes, and ask Claude to generate beautiful Swagger or OpenAPI JSON/YAML files.</span><span class="lang-sw">Mpe Claude API routes zako na umwombe atengeneze nyaraka kama Swagger au OpenAPI.</span></li>
+            </ul>
+        </section>
+
+        <!-- ADVANCED WORKFLOWS -->
+        <section id="workflow-ui">
+            <h2 class="lang-en">Advanced: UI Component Generation</h2>
+            <h2 class="lang-sw">Kiwango cha Juu: Kutengeneza UI</h2>
+
+            <p class="lang-en">You don't need to build UIs from absolute scratch. Describe the interface visually or paste a screenshot of a design (like from Dribbble or Figma) directly into Claude.</p>
+            <p class="lang-sw">Huna haja ya kutengeneza muonekano kuanzia mwanzo. Unaweza kuelezea muonekano au ukaweka picha ya design moja kwa moja kwa Claude.</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="lang-en">UI Prompt</span><span class="lang-sw">Prompt ya UI</span>
+                </div>
+                <div class="code-content">
+                    <span class="syntax-string">[Attach Screenshot of Dashboard]</span><br><br>
+                    "Tengeneza muundo wa React dashboard kama inavyoonekana kwenye hii picha. Tumia Tailwind CSS.<br>
+                    Hakikisha inakuwa na:<br>
+                    - Sidebar upande wa kushoto.<br>
+                    - Header yenye profile icon.<br>
+                    - Kadi 3 za takwimu.<br>
+                    <span class="syntax-highlight">Ifanye iwe responsive kwenye simu na utumie rangi za dark mode.</span>"
+                </div>
+            </div>
+        </section>
+
+        <section id="workflow-performance">
+            <h2 class="lang-en">Advanced: Performance Optimization</h2>
+            <h2 class="lang-sw">Kiwango cha Juu: Kuboresha Kasi</h2>
+
+            <p class="lang-en">If your application is slow, AI can help identify bottlenecks in database queries or frontend rendering loops.</p>
+            <p class="lang-sw">Kama mfumo wako upo polepole, AI inaweza kukusaidia kugundua tatizo kwenye database au kwenye code zinazochukua muda mrefu.</p>
+
+            <div class="alert">
+                <h4 class="lang-en">Practical Example: SQL Optimization</h4>
+                <h4 class="lang-sw">Mfano: Kuboresha SQL</h4>
+                <p class="lang-en">"Hii PostgreSQL query inachukua sekunde 5 ku-run. Hili ni jibu la <code>EXPLAIN ANALYZE</code> [paste output]. Ninawezaje kuiboresha? Je, niongeze index kwenye column gani, au nibadilishe aina ya JOIN niliyotumia?"</p>
+                <p class="lang-sw">"Hii PostgreSQL query inachukua sekunde 5 ku-run. Hili ni jibu la <code>EXPLAIN ANALYZE</code> [paste output]. Ninawezaje kuiboresha? Je, niongeze index kwenye column gani, au nibadilishe aina ya JOIN niliyotumia?"</p>
+            </div>
+        </section>
+
+        <section id="workflow-devops">
+            <h2 class="lang-en">Advanced: DevOps & Scripting</h2>
+            <h2 class="lang-sw">Kiwango cha Juu: DevOps na Scripts</h2>
+
+            <p class="lang-en">Let Claude handle the tedious infrastructure setup. You can ask it to generate Dockerfiles, Nginx configurations, or CI/CD pipelines.</p>
+            <p class="lang-sw">Acha Claude ashughulike na mambo magumu ya server. Unaweza kumwomba atengeneze Dockerfiles, Nginx configs, au scripts za GitHub Actions.</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="lang-en">DevOps Prompt</span><span class="lang-sw">Prompt ya DevOps</span>
+                </div>
+                <div class="code-content">
+                    "Andika GitHub Actions workflow (YML) ambayo itafanya mambo yafuatayo kila tunapofanya 'push' kwenye branch ya 'main':<br>
+                    1. Ku-run <span class="syntax-keyword">`npm test`</span><br>
+                    2. Ku-build React app<br>
+                    3. Kuiweka (deploy) kwenye Ubuntu server yetu kupitia SSH/rsync."
+                </div>
+            </div>
+        </section>
+
+        <!-- POWERCOMPUTERS WORKFLOWS -->
+        <section id="workflow-powercomputers">
+            <h2 class="lang-en">Company Specific: PowerComputers Workflows</h2>
+            <h2 class="lang-sw">Maalumu kwa Kampuni: PowerComputers Workflows</h2>
+
+            <p class="lang-en">These workflows are tailored specifically for the types of enterprise systems, client requirements, and integrations typically handled at PowerComputers Tanzania.</p>
+            <p class="lang-sw">Taratibu hizi zimetengenezwa maalum kwa ajili ya mifumo ya kibiashara, mahitaji ya wateja, na miunganisho inayofanywa na PowerComputers Tanzania.</p>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h3 class="lang-en"><i class="fa-solid fa-file-invoice"></i> 1. Client Meetings to Tech Specs</h3>
+                    <h3 class="lang-sw"><i class="fa-solid fa-file-invoice"></i> 1. Maelezo ya Mteja kwenda Tech Specs</h3>
+                    <p class="lang-en">Convert raw notes from Swahili client meetings directly into structured Jira/Trello tickets with technical Acceptance Criteria.</p>
+                    <p class="lang-sw">Badilisha maelezo ya kikao (notes) cha mteja kuwa tiketi za Jira/Trello zilizopangiliwa na 'Acceptance Criteria'.</p>
+                    <div class="code-block" style="margin-top: 1rem; margin-bottom: 0;">
+                        <div class="code-content" style="padding: 0.75rem;">
+                            <span class="syntax-string">"Haya ni maelezo ya mteja kuhusu mfumo mpya wa HR...</span><br><br>
+                            <span class="syntax-highlight">Tengeneza Jira tickets 5 za maendeleo (development tickets). Kila ticket iwe na 'Title', 'Description' (kwa Kiingereza), na 'Acceptance Criteria'.</span>"
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="lang-en"><i class="fa-solid fa-mobile-screen"></i> 2. Local Integrations (M-Pesa/TRA)</h3>
+                    <h3 class="lang-sw"><i class="fa-solid fa-mobile-screen"></i> 2. API za Malipo & TRA</h3>
+                    <p class="lang-en">Use Claude to scaffold integrations for common Tanzanian APIs like Mobile Money (Daraja, Selcom) or TRA EFD machines.</p>
+                    <p class="lang-sw">Tumia Claude kuandika msingi wa kuunganisha API za Kitanzania kama M-Pesa Daraja, Selcom, au mashine za TRA EFD.</p>
+                    <div class="code-block" style="margin-top: 1rem; margin-bottom: 0;">
+                        <div class="code-content" style="padding: 0.75rem;">
+                            <span class="syntax-highlight">"Andika Node.js service class kwa ajili ya M-Pesa Daraja API. Jumuisha function ya kupata 'Bearer Token' na function ya 'C2B Register URL'. Tumia Axios."</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="grid-column: span 2;">
+                    <h3 class="lang-en"><i class="fa-solid fa-folder-tree"></i> 3. PowerComputers Standard Documentation</h3>
+                    <h3 class="lang-sw"><i class="fa-solid fa-folder-tree"></i> 3. Nyaraka za Viwango vya PowerComputers</h3>
+                    <p class="lang-en">Ensure all project handoffs meet internal quality standards by having AI generate comprehensive system docs based on your codebase.</p>
+                    <p class="lang-sw">Hakikisha miradi yote inakidhi viwango vya ndani vya kampuni kwa kutumia AI kutengeneza nyaraka kamili za mfumo pindi mradi unapokamilika.</p>
+                    <div class="code-block" style="margin-top: 1rem; margin-bottom: 0;">
+                        <div class="code-content" style="padding: 0.75rem;">
+                            <span class="syntax-string">"Soma hii API routes file ya mradi wetu wa Inventory.</span><br><br>
+                            <span class="syntax-highlight">Andika 'Technical Documentation' inayoendana na viwango vya PowerComputers yenye sehemu zifuatazo: 1. System Overview, 2. Authentication Flow, 3. API Endpoints Table, na 4. Database Schema Assumptions."</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- IMPLEMENTATION PLAN -->
+        <section id="roadmap">
+            <h2 class="lang-en">4-Week Implementation Plan</h2>
+            <h2 class="lang-sw">Mpango wa Wiki 4</h2>
+
+            <p class="lang-en">A structured plan to take your development team from zero to fully AI-assisted.</p>
+            <p class="lang-sw">Mpango kamili wa kuiwezesha timu yako kutumia AI kwa ufanisi zaidi.</p>
+
+            <div style="margin-top: 2rem;">
+                <div class="step-item">
+                    <div class="step-num">1</div>
+                    <div class="step-content">
+                        <h3 class="lang-en">Week 1: Try the Tools</h3>
+                        <h3 class="lang-sw">Wiki 1: Jaribu Zana</h3>
+                        <p class="lang-en">Create free accounts on Gemini and Claude. Spend 30 minutes each day asking AI to explain code you've written before, in Swahili. Get comfortable with the interface.</p>
+                        <p class="lang-sw">Fungua akaunti za Gemini na Claude. Tumia dakika 30 kila siku kuomba AI ikuelezee code ulizowahi kuandika kwa Kiswahili ili kuzoea.</p>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-num">2</div>
+                    <div class="step-content">
+                        <h3 class="lang-en">Week 2: Use on Real Work</h3>
+                        <h3 class="lang-sw">Wiki 2: Prompt kwa Kazi Halisi</h3>
+                        <p class="lang-en">Pick one real task from your sprint. Use AI to generate the first draft. Edit it rather than writing from scratch. Notice how much time you save.</p>
+                        <p class="lang-sw">Chagua kazi moja kwenye mradi wako. Tumia AI kutengeneza draft ya kwanza ya code badala ya kuanza mwanzo (scratch).</p>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-num">3</div>
+                    <div class="step-content">
+                        <h3 class="lang-en">Week 3: IDE Integration</h3>
+                        <h3 class="lang-sw">Wiki 3: IDE na AI</h3>
+                        <p class="lang-en">Add an AI coding assistant (like GitHub Copilot or Cursor) directly into your IDE. Write comments in Swahili and let AI autocomplete.</p>
+                        <p class="lang-sw">Sakinisha zana kama GitHub Copilot au Cursor kwenye VS Code yako. Andika comments za Kiswahili na uache AI imalizie code.</p>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-num">4</div>
+                    <div class="step-content">
+                        <h3 class="lang-en">Week 4: Share with the Team</h3>
+                        <h3 class="lang-sw">Wiki 4: Shiriki na Timu</h3>
+                        <p class="lang-en">Document 3 prompts that worked well for your project. Share them with your team to build a shared Swahili "prompt library."</p>
+                        <p class="lang-sw">Andika mifano 3 ya prompt zilizokusaidia sana. Shiriki na timu yako ili kutengeneza maktaba ya prompts (prompt library).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="best-practices">
+            <h2 class="lang-en">Best Practices & Pitfalls</h2>
+            <h2 class="lang-sw">Mbinu Bora na Makosa ya Kuepuka</h2>
+
+            <p class="lang-en">AI is an assistant, not an autopilot. Follow these three rules to maximize your productivity without compromising code quality.</p>
+            <p class="lang-sw">AI ni msaidizi, sio mbadala wako. Fuata sheria hizi tatu ili kuongeza ufanisi wako bila kushusha ubora wa kazi.</p>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h3 class="lang-en"><i class="fa-solid fa-bullseye"></i> 1. Be Specific</h3>
+                    <h3 class="lang-sw"><i class="fa-solid fa-bullseye"></i> 1. Kuwa Wazi (Specific)</h3>
+                    <p class="lang-en">Instead of "make a login page", say "make a responsive React login page with Tailwind using email/password. Ensure error states are handled."</p>
+                    <p class="lang-sw">Badala ya kusema "tengeneza login page", sema "tengeneza login page ya React yenye email na password ukitumia Tailwind. Hakikisha inaonyesha error vizuri."</p>
+                </div>
+                <div class="card">
+                    <h3 class="lang-en"><i class="fa-solid fa-rotate"></i> 2. Iterate Slowly</h3>
+                    <h3 class="lang-sw"><i class="fa-solid fa-rotate"></i> 2. Boresha Taratibu</h3>
+                    <p class="lang-en">If the code isn't perfect, tell Claude what to fix. "Make it faster", "Extract this into a separate component", or "Handle this specific edge case."</p>
+                    <p class="lang-sw">Kama code sio nzuri asilimia 100, mwambie Claude arekebishe. Mfano: "Ifanye iwe na kasi", au "Tenga hii iwe component inayojitegemea."</p>
+                </div>
+                <div class="card" style="grid-column: span 2;">
+                    <h3 class="lang-en" style="color: var(--accent);"><i class="fa-solid fa-triangle-exclamation"></i> 3. Always Review The Output</h3>
+                    <h3 class="lang-sw" style="color: var(--accent);"><i class="fa-solid fa-triangle-exclamation"></i> 3. Kagua Kila Wakati</h3>
+                    <p class="lang-en"><strong>NEVER</strong> copy-paste code to production without understanding it. Think of AI as a junior developer you must supervise. You are ultimately responsible for the security and functionality of the final product.</p>
+                    <p class="lang-sw"><strong>KAMWE</strong> usiweke code kwenye production bila kuielewa. Chukulia AI kama "Junior Developer" unayepaswa kumsimamia. Wewe ndiye unayewajibika kwa usalama na utendaji wa kazi wa mwisho.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Smooth scrolling for sidebar links
+        document.querySelectorAll('.sidebar a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Language Toggle
+        function setLanguage(lang) {
+            if (lang === 'sw') {
+                document.body.classList.add('lang-sw-active');
+                document.querySelectorAll('.lang-btn')[0].classList.remove('active');
+                document.querySelectorAll('.lang-btn')[1].classList.add('active');
+            } else {
+                document.body.classList.remove('lang-sw-active');
+                document.querySelectorAll('.lang-btn')[0].classList.add('active');
+                document.querySelectorAll('.lang-btn')[1].classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>
