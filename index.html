@@ -184,6 +184,11 @@
 
             <div class="section-title">Company Specific</div>
             <li><a href="#workflow-powercomputers">PowerComputers Workflows</a></li>
+            <li><a href="#workflow-multiagent">Multi-Agent Orchestration</a></li>
+
+            <div class="section-title">Security & Advanced</div>
+            <li><a href="#security-guardrails">Data Privacy Guardrails</a></li>
+            <li><a href="#prompt-engineering">Prompt Engineering 101</a></li>
 
             <div class="section-title">Implementation</div>
             <li><a href="#roadmap">4-Week Roadmap</a></li>
@@ -558,15 +563,94 @@
                     </div>
                 </div>
 
-                <div class="card" style="grid-column: span 2;">
-                    <h3 class="lang-en"><i class="fa-solid fa-folder-tree"></i> 3. PowerComputers Standard Documentation</h3>
-                    <h3 class="lang-sw"><i class="fa-solid fa-folder-tree"></i> 3. Nyaraka za Viwango vya PowerComputers</h3>
-                    <p class="lang-en">Ensure all project handoffs meet internal quality standards by having AI generate comprehensive system docs based on your codebase.</p>
-                    <p class="lang-sw">Hakikisha miradi yote inakidhi viwango vya ndani vya kampuni kwa kutumia AI kutengeneza nyaraka kamili za mfumo pindi mradi unapokamilika.</p>
+                </div>
+
+                <div class="card">
+                    <h3 class="lang-en"><i class="fa-solid fa-server"></i> 3. Local API Mocking</h3>
+                    <h3 class="lang-sw"><i class="fa-solid fa-server"></i> 3. Kutengeneza Local API Mocks</h3>
+                    <p class="lang-en">When third-party Tanzanian APIs are down in sandbox mode, use Claude to instantly spin up a local mock server.</p>
+                    <p class="lang-sw">Wakati API za nje zikiwa hazipatikani kwa muda, tumia Claude kutengeneza 'mock server' ya muda ili kazi isisimame.</p>
                     <div class="code-block" style="margin-top: 1rem; margin-bottom: 0;">
                         <div class="code-content" style="padding: 0.75rem;">
-                            <span class="syntax-string">"Soma hii API routes file ya mradi wetu wa Inventory.</span><br><br>
-                            <span class="syntax-highlight">Andika 'Technical Documentation' inayoendana na viwango vya PowerComputers yenye sehemu zifuatazo: 1. System Overview, 2. Authentication Flow, 3. API Endpoints Table, na 4. Database Schema Assumptions."</span>
+                            <span class="syntax-highlight">"Andika Node.js/Express mock server inayorudisha majibu (responses) yanayofanana na Selcom API. Ninahitaji endpoint ya `/checkout` inayorudisha 'success' baada ya sekunde 2."</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="lang-en"><i class="fa-solid fa-folder-tree"></i> 4. Standard Documentation</h3>
+                    <h3 class="lang-sw"><i class="fa-solid fa-folder-tree"></i> 4. Nyaraka za Viwango</h3>
+                    <p class="lang-en">Ensure project handoffs meet internal quality standards by having AI generate system docs based on your code.</p>
+                    <p class="lang-sw">Hakikisha miradi inakidhi viwango vya ndani kwa kutumia AI kutengeneza nyaraka za mfumo pindi mradi unapokamilika.</p>
+                    <div class="code-block" style="margin-top: 1rem; margin-bottom: 0;">
+                        <div class="code-content" style="padding: 0.75rem;">
+                            <span class="syntax-string">"Soma hii API routes file.</span><br>
+                            <span class="syntax-highlight">Andika 'Technical Docs' yenye: 1. Overview, 2. Auth Flow, 3. API Endpoints."</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MULTI AGENT -->
+        <section id="workflow-multiagent">
+            <h2 class="lang-en">Company Specific: Multi-Agent Orchestration</h2>
+            <h2 class="lang-sw">Maalumu kwa Kampuni: Mfumo wa Multi-Agent</h2>
+
+            <p class="lang-en">Following the stringent guidelines in our <code>claude.md</code>, any non-trivial code change requires orchestrating multiple AI agents rather than just prompting once.</p>
+            <p class="lang-sw">Kulingana na sheria zetu kwenye <code>claude.md</code>, mabadiliko yoyote makubwa ya code yanahitaji mfumo wa 'Multi-Agent' badala ya prompt moja tu.</p>
+
+            <ul class="content-list">
+                <li><strong class="lang-en">1. Plan/Architecture Pre-Flight:</strong><strong class="lang-sw">1. Mpango wa Usanifu (Architecture):</strong> <span class="lang-en">Ask Claude to act as two independent Senior Architects and provide two different solutions. Reconcile them before writing code.</span><span class="lang-sw">Mwombe Claude afikiri kama 'Senior Architects' wawili wanaojitegemea watoe suluhisho mbili tofauti, kisha zilinganishe.</span></li>
+                <li><strong class="lang-en">2. Test-First Implementation:</strong><strong class="lang-sw">2. Kuandika Tests Kwanza:</strong> <span class="lang-en">Spawn a 'QA Agent' to write the failing test suite based on the spec. Only then, spawn a 'Dev Agent' to write the code that passes those tests.</span><span class="lang-sw">Tumia 'QA Agent' kuandika tests kwanza, kisha tumia 'Dev Agent' kuandika code inayo-pass hizo tests.</span></li>
+                <li><strong class="lang-en">3. Peer Review:</strong><strong class="lang-sw">3. Uhakiki (Peer Review):</strong> <span class="lang-en">Never ship the first draft. Paste the generated code into a new prompt and act as a reviewer: "Tafuta makosa (bugs) kwenye hii code."</span><span class="lang-sw">Usitumie code ya kwanza unayopewa. Weka code hiyo kwenye prompt mpya na umwombe atafute makosa.</span></li>
+            </ul>
+        </section>
+
+        <!-- SECURITY & ADVANCED -->
+        <section id="security-guardrails">
+            <h2 class="lang-en">Security & Data Privacy Guardrails</h2>
+            <h2 class="lang-sw">Usalama na Faragha ya Data</h2>
+
+            <div class="alert" style="border-left-color: #f85149; background-color: rgba(248, 81, 73, 0.1);">
+                <h4 class="lang-en" style="color: #f85149;"><i class="fa-solid fa-shield-halved"></i> What NOT to share with AI</h4>
+                <h4 class="lang-sw" style="color: #f85149;"><i class="fa-solid fa-shield-halved"></i> Vitu vya KUTOWEKA kwenye AI</h4>
+                <p class="lang-en"><strong>NEVER</strong> paste real PII (Personally Identifiable Information), raw client database dumps, hardcoded API keys, passwords, or proprietary client algorithms into public AI models.</p>
+                <p class="lang-sw"><strong>KAMWE</strong> usiweke taarifa halisi za wateja (majina/namba za simu), data halisi za database, passwords, API keys, au algorithm za siri za wateja wako kwenye AI za mtandaoni.</p>
+            </div>
+            
+            <p class="lang-en"><strong>The Workflow:</strong> Always ask AI to generate "Mock Data" or anonymize your database schemas before pasting them for help.</p>
+            <p class="lang-sw"><strong>Nini cha kufanya:</strong> Daima tumia majina au data za uongo (Mock Data) unapoomba msaada. Mfano: Badala ya kutumia jina halisi, tumia "User A".</p>
+        </section>
+
+        <section id="prompt-engineering">
+            <h2 class="lang-en">Prompt Engineering 101</h2>
+            <h2 class="lang-sw">Uhandisi wa Prompts 101</h2>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h3 class="lang-en"><i class="fa-solid fa-copy"></i> The "Few-Shot" Technique</h3>
+                    <h3 class="lang-sw"><i class="fa-solid fa-copy"></i> Mbinu ya "Kutoa Mifano"</h3>
+                    <p class="lang-en">Instead of just asking for a new feature, provide an existing PowerComputers component code as a template first.</p>
+                    <p class="lang-sw">Badala ya kuomba kipengele kipya moja kwa moja, mpe kwanza mfano wa code mnayotumia ofisini ili afuate mtindo huo.</p>
+                    <div class="code-block" style="margin-top: 1rem; margin-bottom: 0;">
+                        <div class="code-content" style="padding: 0.75rem;">
+                            <span class="syntax-string">"Huu ni mfano wa 'Button Component' yetu tunayotumia:</span><br>
+                            [Bandika Code Yako]<br><br>
+                            <span class="syntax-highlight">Sasa nitengenezee 'Modal Component' mpya inayotumia mtindo huohuo wa Tailwind."</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="lang-en"><i class="fa-solid fa-list-check"></i> The PR Review Prompt</h3>
+                    <h3 class="lang-sw"><i class="fa-solid fa-list-check"></i> Prompt ya Kukagua PR</h3>
+                    <p class="lang-en">Use AI to review your code before submitting a Pull Request to a senior developer.</p>
+                    <p class="lang-sw">Tumia AI kukagua code yako kabla ya kuituma (Pull Request) kwa "Senior Developer".</p>
+                    <div class="code-block" style="margin-top: 1rem; margin-bottom: 0;">
+                        <div class="code-content" style="padding: 0.75rem;">
+                            <span class="syntax-string">"Hakikisha hii code haina security vulnerabilities (kama SQL injection) na inafuata sheria za claude.md yetu:</span><br><br>
+                            [Bandika `git diff` yako hapa]"
                         </div>
                     </div>
                 </div>
